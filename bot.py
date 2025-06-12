@@ -460,9 +460,8 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("addbot", addbot))
     app.add_handler(CommandHandler("setbotapi", setbotapi))
     app.add_handler(CommandHandler("listbots", listbots))
-    # Start background cleanup task
-    app.job_queue.run_repeating(lambda *_: asyncio.create_task(cleanup_old_files()), interval=600, first=10)
-    # Start daily usage reset
+    # Start background cleanup task and daily usage reset as asyncio tasks
+    asyncio.create_task(cleanup_old_files())
     asyncio.create_task(reset_free_uses_daily())
     print("Bot started!")
     app.run_polling()
